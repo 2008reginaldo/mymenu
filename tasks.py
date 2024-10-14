@@ -102,7 +102,7 @@ def push_to_github():
     msg = str( input("\nInsert commit msg: "))
     repository_name = os.path.basename( os.getcwd() )
     cmd1 = f'git add .'
-    cmd2 = f'git commit -m {msg}'
+    cmd2 = f"git commit -m '{msg}'"
     cmd3 = f'git push -u origin main'
 
     os.system(cmd1)
