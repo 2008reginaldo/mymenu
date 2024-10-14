@@ -98,10 +98,16 @@ def create_github_repo():
         print('\nDone!!')
 
 def push_to_github():
+
+    msg = str( input("\nInsert commit msg: "))
     repository_name = os.path.basename( os.getcwd() )
-    cmd = f'git push -u origin main'
-    print(cmd)
-    os.system(cmd)
+    cmd1 = f'git add .'
+    cmd2 = f'git commit -m {msg}'
+    cmd3 = f'git push -u origin main'
+
+    os.system(cmd1)
+    os.system(cmd2)
+    os.system(cmd3)
 
 def nixos_rebuild():
     flake_dir = f'{HOME_DIRECTORY}/SyncedFiles/common/flakes/{HOSTNAME}'
