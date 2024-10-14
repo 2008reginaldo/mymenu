@@ -42,14 +42,19 @@ ssh_menu = {
     12: ('sync from lst-gpu-2 (change local)', [sync_remotes, ('from', 'lst-gpu-2')]),
     13: ('sync from lst-gpu-3 (change local)', [sync_remotes, ('from', 'lst-gpu-3')]),
     14: ('sync from lst-gpu-all (change local)', [sync_remotes, ('from', 'lst-gpu-all')]),
+    15: ('connect qtconsole to lst-gpu-3 jupyter server', [launch_qtc, (SHELLHUB_LST_3)])
 }
 
 nixos_menu = {
     1: ('create folders', [create_folders, ]),
+    2: ('nixos rebuild', [nixos_rebuild, ]),
+    3: ('test func', [check_git_status, (f'{HOME_DIRECTORY}/Dropbox/Academico/libgenw/') ]),
 }
 
 miscellaneous_menu = {
-    1: ('Qtile in a Xephyr session', [qtile_Xephyr, ])
+    1: ('Create github repository', [create_github_repo, ]),
+    2: ('Push to github (main branch)', [push_to_github, ]),
+    3: ('Qtile in a Xephyr session', [qtile_Xephyr, ]),
 }
 
 # level 0 ----------------------------------------------

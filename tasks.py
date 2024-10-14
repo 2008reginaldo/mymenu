@@ -83,3 +83,47 @@ def make_local_backup():
     cmd = f'rsync -avzP {source} {destination}'
     os.system(cmd)
 
+def create_github_repo():
+     repository_name = os.path.basename( os.getcwd() )
+     if confirm(f'Do you want to create a repository named {repository_name}?'):
+        cmd_p1 = '\'{"name":' + f'"{repository_name}' + '"}\''
+        cmd = f'curl -H "Authorization: token {GH_TOLKEN}" https://api.github.com/user/repos -d {cmd_p1}'
+        print('\nCreating repository')
+        os.system(cmd)
+        print('\nDone!!')
+
+        cmd2 = f'git remote set-url origin https://{GH_TOLKEN}@github.com/{GH_USERNAME}/{repository_name}'
+        print('\nSetting Up for CLI push')
+        os.system(cmd2)
+        print('\nDone!!')
+
+def push_to_github():
+    repository_name = os.path.basename( os.getcwd() )
+    cmd = f'git push -u origin main'
+    print(cmd)
+    os.system(cmd)
+
+def nixos_rebuild():
+    flake_dir = f'{HOME_DIRECTORY}/SyncedFiles/common/flakes/{HOSTNAME}'
+    cmd = f'git -C {flake_dir} log -1 --pretty=%B'
+    p1 = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+    last_commit_msg = result.stdout.strip().replace(' ', '_')
+    print(last_commit_msg)
+    cmd = f'sudo nixos-rebuild switch -p {last_commit_msg} --flake {HOME_DIRECTORY}/SyncedFiles/common/flakes/{HOSTNAME}#{HOSTNAME}'
+    print(cmd)
+    os.system(cmd)
+
+def launch_qtc(remote):
+    print(remote)
+    cmd0 = f"rsync -avz -e ssh {remote}:/home/reginaldo/.local/share/jupyter/runtime/ /home/regis/.local/share/jupyter/runtime"
+    print(cmd0)
+    cmd1 = "jupyter-qtconsole --JupyterWidget.font_size=16 --JupyterWidget.font_family='SauceCodePro Nerd Font Mono' --JupyterWidget.scrollbar_visibility=False "
+    cmd2 = f" --ssh={remote} --existing /home/regis/.local/share/jupyter/runtime/kernel-76937.json "
+    cmd = f'nix-shell /home/regis/SyncedFiles/bin/mymenu/nix-shells/qtc3.nix --run "{cmd1} + {cmd2} &"'
+
+    #os.system(cmd0)
+    os.system(cmd)
+    #p1 = subprocess.run(cmd1, shell=True, capture_output=True, text=True)
+    #p1 = subprocess.run(cmd2, shell=True, capture_output=True, text=True)
+

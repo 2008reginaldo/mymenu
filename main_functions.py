@@ -1,7 +1,7 @@
 import os
 import subprocess
 from config import *
-# from IPython import embed
+#from IPython import embed
 
 HOME_DIRECTORY = os.getenv("HOME")
 HOSTNAME = os.uname().nodename
@@ -122,3 +122,20 @@ def rsync_ssh(direction, host_target):
         print(f'Syncing {local_folder} from {remote_folder}. Changing local')
     print(cmd)
     os.system(cmd)
+
+def check_git_status(path):
+    print(path)
+    """Check if there are uncommitted changes."""
+    try:
+        result = subprocess.run(['git', '-C',
+                                 f'{HOME_DIRECTORY}/Dropbox/Academico/libgen/',
+                                 'status', '--porcelain'], capture_output=True)
+        # result = subprocess.run(['ls', f'{HOME_DIRECTORY}/SyncedFiles/'], capture_output=True, text=True)
+        print('\n here is the status: ', result.stdout.strip())
+
+    except result.CalledProcessError as e:
+        print(f"Error during rclone bisync: {e}")
+
+    # if result.stdout.strip() == "":
+        # print('jdbjhdbfhsdbfhsvh')
+    return None
